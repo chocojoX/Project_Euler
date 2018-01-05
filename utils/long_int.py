@@ -12,20 +12,13 @@ class LongInt(object):
         assert x>=0
         self.number[0] = self.number[0] + x
 
-        k = self.basis; i=1
-        while int(self.number[0]/k)>0:
-            k = k*self.basis
-            i+=1
-        k = k/self.basis; i-=1
-        while i>0:
-            to_move = int(self.number[0]/k)
-            self.number[0] = self.number[0] - to_move*k
-            if i<len(self.number):
-                self.number[i] = self.number[i] + to_move
+        for j in range(len(self.number)):
+            to_move = int(self.number[j]/self.basis)
+            self.number[j] = self.number[j] - to_move*self.basis
+            if 1+j<len(self.number):
+                self.number[j+1] = self.number[j+1] + to_move
             else:
                 self.number.append(to_move)
-            k = k/self.basis
-            i = i-1
 
         for i, b in enumerate(self.number):
             if b>self.basis:
@@ -34,6 +27,12 @@ class LongInt(object):
                     self.number.append(1)
                 else:
                     self.number[i+1] = self.number[i+1]+1
+
+        while self.number[-1]>=self.basis:
+            b = self.number[-1]
+            to_move = int(b/self.basis)
+            self.number[-1] = b-to_move*self.basis
+            self.number.append(to_move)
 
 
     def multiply(self, x):
