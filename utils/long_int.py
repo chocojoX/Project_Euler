@@ -21,7 +21,7 @@ class LongInt(object):
                 self.number.append(to_move)
 
         for i, b in enumerate(self.number):
-            if b>self.basis:
+            if b>=self.basis:
                 self.number[i] = b-self.basis
                 if len(self.number)==i+1:
                     self.number.append(1)
@@ -49,7 +49,7 @@ class LongInt(object):
                 self.number.append(to_move)
 
         for i, b in enumerate(self.number):
-            if b>self.basis:
+            if b>=self.basis:
                 to_move = int(b/self.basis)
                 self.number[i] = b-to_move*self.basis
                 if len(self.number)==i+1:
@@ -62,6 +62,31 @@ class LongInt(object):
             to_move = int(b/self.basis)
             self.number[-1] = b-to_move*self.basis
             self.number.append(to_move)
+
+
+    def add_long(self, x):
+        while(len(x.number)<len(self.number)):
+            x.number.append(0)
+        while(len(self.number)<len(x.number)):
+            self.number.append(0)
+
+        self.number = [b0+b1 for (b0,b1) in zip(self.number, x.number)]
+
+        for i, b in enumerate(self.number):
+            if b>=self.basis:
+                to_move = int(b/self.basis)
+                self.number[i] = b-to_move*self.basis
+                if len(self.number)==i+1:
+                    self.number.append(to_move)
+                else:
+                    self.number[i+1] = self.number[i+1]+to_move
+
+        while self.number[-1]>=self.basis:
+            b = self.number[-1]
+            to_move = int(b/self.basis)
+            self.number[-1] = b-to_move*self.basis
+            self.number.append(to_move)
+
 
 
 
